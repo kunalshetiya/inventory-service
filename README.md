@@ -49,7 +49,7 @@ Prometheus scrapes /metrics
       ↓
 Grafana Visualizes Metrics
 📊 Monitoring (Golden Signals)
-
+---
 This project tracks key production metrics:
 
 Latency → API response time
