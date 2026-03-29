@@ -1,0 +1,59 @@
+stages:
+  - test
+  - build
+
+variables:
+  DOCKER_TLS_CERTDIR: "/certs"
+
+cache:
+  paths:
+    - .cache/pip
+
+# Test Stage
+test:
+  stage: test
+  image: python:3.12-slim
+  before_script:
+    - apt-get update -qq
+    - apt-get install -y curl
+    - python -m venv venv
+    - source venv/bin/activate
+    - pip install --upgrade pip
+    - pip install -r requirements.txt
+  script:
+    - source venv/bin/activate
+    - echo "Running basic tests..."
+    - python -c "
+from app.main import app
+from fastapi.testclient import TestClient
+client = TestClient(app)
+response = client.get('/health')
+print('Health check status:', response.status_code)
+assert response.status_code == 200
+print('✅ All basic tests passed!')
+"
+    - echo "✅ Test stage completed successfully"
+  artifacts:
+    when: always
+
+# Build Docker Image
+build-docker:
+  stage: build
+  image: docker:stable
+  services:
+    - docker:dind
+  variables:
+    DOCKER_HOST: tcp://docker:2376
+    DOCKER_TLS_VERIFY: "1"
+    DOCKER_CERT_PATH: "/certs/client"
+  before_script:
+    - docker info
+  script:
+    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA .
+    - docker build -t $CI_REGISTRY_IMAGE:latest .
+    - echo "✅ Docker image built successfully"
+    - echo "Image tag: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+  tags:
+    - docker
