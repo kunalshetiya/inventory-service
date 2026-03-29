@@ -35,7 +35,7 @@ A **production-ready FastAPI microservice** with end-to-end **CI/CD pipeline**, 
 
 ## 🏗️ Architecture
 
-```text
+
 Developer Push
       ↓
 GitLab CI Pipeline
@@ -49,7 +49,9 @@ Prometheus scrapes /metrics
       ↓
 Grafana Visualizes Metrics
 📊 Monitoring (Golden Signals)
+
 ---
+
 This project tracks key production metrics:
 
 Latency → API response time
