@@ -37,17 +37,28 @@ A **production-ready FastAPI microservice** with end-to-end **CI/CD pipeline**, 
 
 
 Developer Push
+
       ↓
+      
 GitLab CI Pipeline
+
 (Test Stage → Build Stage)
+
       ↓
 Docker Image Built
+
       ↓
+      
 Application Runs via Docker Compose
+
       ↓
+      
 Prometheus scrapes /metrics
+
       ↓
+      
 Grafana Visualizes Metrics
+
 📊 Monitoring (Golden Signals)
 
 ---
@@ -55,14 +66,19 @@ Grafana Visualizes Metrics
 This project tracks key production metrics:
 
 Latency → API response time
+
 Traffic → Number of requests
+
 Errors → Failed requests
+
 Saturation → System resource usage
+
 🚀 How to Run Locally
 1. Clone the repository
 git clone https://github.com/kunalshetiya/inventory-service.git
 cd inventory-service
-2. Run with Docker Compose
+
+3. Run with Docker Compose
 docker compose up -d
 🌐 Access Services
 FastAPI App: http://localhost:8000/health
