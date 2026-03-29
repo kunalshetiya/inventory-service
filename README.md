@@ -91,10 +91,20 @@ Password: admin
 Pipeline includes:
 
 ✅ Automated health check test
+
 ✅ Dependency installation
+
 ✅ Docker image build
+
 ✅ Runs on push to main branch
-📸 Screenshots (Add Here)
+
+📸 Screenshots:
+<img width="1416" height="743" alt="Screenshot 2026-03-29 130724" src="https://github.com/user-attachments/assets/74a45c29-371a-4c83-a42c-e625a8aac461" />
+<img width="1919" height="568" alt="Screenshot 2026-03-29 130652" src="https://github.com/user-attachments/assets/9dc4b3b4-809e-4254-b3b5-c1223429fad8" />
+<img width="1919" height="796" alt="Screenshot 2026-03-29 130634" src="https://github.com/user-attachments/assets/66f7b320-37a7-4e8d-9559-5c9d550602b3" />
+<img width="1919" height="805" alt="Screenshot 2026-03-29 130624" src="https://github.com/user-attachments/assets/f2852791-dc54-416d-b562-218f8b2ee273" />
+
+
 GitLab Pipeline Success ✅
 Grafana Dashboard 📊
 Prometheus Targets 🎯
