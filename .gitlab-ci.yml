@@ -9,7 +9,6 @@ cache:
   paths:
     - .cache/pip
 
-# Test Stage - Basic health check
 test:
   stage: test
   image: python:3.12-slim
@@ -23,18 +22,21 @@ test:
   script:
     - source venv/bin/activate
     - echo "Running basic health check test..."
-    - python -c '
-from app.main import app
-from fastapi.testclient import TestClient
-client = TestClient(app)
-response = client.get("/health")
-print("Health check status:", response.status_code)
-assert response.status_code == 200
-print("✅ Basic test passed!")
-'
+    - |
+      python <<EOF
+      from app.main import app
+      from fastapi.testclient import TestClient
+
+      client = TestClient(app)
+      response = client.get("/health")
+
+      print("Health check status:", response.status_code)
+      assert response.status_code == 200
+
+      print("✅ Basic test passed!")
+      EOF
     - echo "✅ Test stage completed successfully"
 
-# Build Docker Image
 build-docker:
   stage: build
   image: docker:24.0
@@ -49,6 +51,7 @@ build-docker:
   script:
     - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA .
     - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE:latest
-    - echo "✅ Docker image built successfully"
+    - echo "✅ Docker image built and tagged successfully"
+    - echo "Image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA"
   rules:
-    - if: $CI_COMMIT_BRANCH == "main"
+    - if: '$CI_COMMIT_BRANCH == "main"'
