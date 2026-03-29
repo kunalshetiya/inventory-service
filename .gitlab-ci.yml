@@ -9,7 +9,7 @@ cache:
   paths:
     - .cache/pip
 
-# Test Stage
+# ==================== Test Stage ====================
 test:
   stage: test
   image: python:3.12-slim
@@ -22,21 +22,19 @@ test:
     - pip install -r requirements.txt
   script:
     - source venv/bin/activate
-    - echo "Running basic tests..."
-    - python -c "
+    - echo "Running basic health check test..."
+    - python -c '
 from app.main import app
 from fastapi.testclient import TestClient
 client = TestClient(app)
-response = client.get('/health')
-print('Health check status:', response.status_code)
+response = client.get("/health")
+print("Health check status:", response.status_code)
 assert response.status_code == 200
-print('✅ All basic tests passed!')
-"
+print("✅ Basic test passed!")
+'
     - echo "✅ Test stage completed successfully"
-  artifacts:
-    when: always
 
-# Build Docker Image
+# ==================== Build Docker Stage ====================
 build-docker:
   stage: build
   image: docker:stable
@@ -50,10 +48,8 @@ build-docker:
     - docker info
   script:
     - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA .
-    - docker build -t $CI_REGISTRY_IMAGE:latest .
+    - docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA $CI_REGISTRY_IMAGE:latest
     - echo "✅ Docker image built successfully"
-    - echo "Image tag: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA"
+    - echo "Image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA"
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
-  tags:
-    - docker
